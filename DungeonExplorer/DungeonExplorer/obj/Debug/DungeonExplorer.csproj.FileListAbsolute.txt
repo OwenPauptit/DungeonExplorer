@@ -1,0 +1,7 @@
+C:\Users\owenp\source\repos\DungeonExplorer\DungeonExplorer\bin\Debug\DungeonExplorer.exe.config
+C:\Users\owenp\source\repos\DungeonExplorer\DungeonExplorer\bin\Debug\DungeonExplorer.exe
+C:\Users\owenp\source\repos\DungeonExplorer\DungeonExplorer\bin\Debug\DungeonExplorer.pdb
+C:\Users\owenp\source\repos\DungeonExplorer\DungeonExplorer\obj\Debug\DungeonExplorer.csprojAssemblyReference.cache
+C:\Users\owenp\source\repos\DungeonExplorer\DungeonExplorer\obj\Debug\DungeonExplorer.csproj.CoreCompileInputs.cache
+C:\Users\owenp\source\repos\DungeonExplorer\DungeonExplorer\obj\Debug\DungeonExplorer.exe
+C:\Users\owenp\source\repos\DungeonExplorer\DungeonExplorer\obj\Debug\DungeonExplorer.pdb
