@@ -28,8 +28,8 @@ namespace DungeonExplorer
         {
             _floorPlan = new List<string>();
             _doors = new List<int[]>();
-            _width = rnd.Next(5, Program.WINDOW_WIDTH - 3);
-            _height = rnd.Next(5, Program.WINDOW_HEIGHT - 3);
+            _width = rnd.Next(5, Program.WINDOW_WIDTH - 4);
+            _height = rnd.Next(5, Program.WINDOW_HEIGHT - 4);
             generateDoors();
             generateFloorPlan();
             displayFloorPlan();
@@ -71,7 +71,7 @@ namespace DungeonExplorer
                 valid = true;
                 foreach (var d in _doors)
                 {
-                    if (    (d[0] == x && (x == 0 || x == _width) )    ||    ( d[1] == y && (y == 0 || y == _height) )) // check if 2 doors are on the same wall - not allowed
+                    if (    (d[0] == x && (x == 0 || x == _width-1) )    ||    ( d[1] == y && (y == 0 || y == _height-1) )) // check if 2 doors are on the same wall - not allowed
                     {
                         valid = false;
                         break;
@@ -89,19 +89,19 @@ namespace DungeonExplorer
             string line, temp;
 
             double calc = (Program.WINDOW_WIDTH - _width) / 2; // calculating spaces left, right and on top of the room
-            int spacesL = (int)Math.Floor(calc);
-            int spacesR = Program.WINDOW_WIDTH - spacesL;
+            int spacesL = (int)Math.Ceiling(calc);
+            int spacesR = 2;// Program.WINDOW_WIDTH - spacesL - _width;
 
             calc = (Program.WINDOW_HEIGHT - _height) / 2;
-            int spacesT = (int)Math.Floor(calc);
+            int spacesT = (int)Math.Ceiling(calc);
 
 
-            for (int i = 0; i < this._height+ spacesT; ++i) // this used for clarity as could be confusion between Program.WINDOW_WIDTH / Program.WINDOW_HEIGHT and _width / _height
+            for (int i = 0; i < this._height+ spacesT+1; ++i) // this used for clarity as could be confusion between Program.WINDOW_WIDTH / Program.WINDOW_HEIGHT and _width / _height
             {
 
 
-                if (i < spacesT) {
-                    line = new string(' ', 1);
+                if (i < spacesT || i == _height + spacesT) {
+                    line = new string(' ', _width + spacesL);
                 }
                 else if (i == spacesT || i == this._height +spacesT-1)
                 {
@@ -114,7 +114,71 @@ namespace DungeonExplorer
                 foreach( var d in _doors)
                 {
 
-        
+                    if ((d[0] == 0 || d[0] == _width - 1) && (d[1] + spacesT == i + 1 || d[1] + spacesT == i - 1))
+                    {
+                        temp = "";
+                        for (int k = 0; k < line.Length; ++k)
+                        {
+                            if (d[0] == 0)
+                            {
+                                if (k + 1 == d[0] + spacesL)
+                                {
+                                    temp += "#";
+                                }
+                                else
+                                {
+                                    temp += line[k];
+                                }
+                            }
+                            else
+                            {
+                                if (k - 1 == d[0] + spacesL)
+                                {
+                                    temp += "#";
+                                }
+                                else
+                                {
+                                    temp += line[k];
+                                }
+
+                            }
+                        }
+                        line = temp;
+                    }
+                    else if (d[1] == 0 && d[1] + spacesT == i + 1)
+                    {
+                        temp = "";
+                        for (int k = 0; k < line.Length; ++k)
+                        {
+                            if (k + 1 == d[0] + spacesL || k - 1 == d[0] + spacesL)
+                            {
+                                temp += "#";
+                            }
+                            else
+                            {
+                                temp += line[k];
+                            }
+                        }
+                        line = temp;
+                    }
+                    else if (d[1] == _height - 1 && d[1] + spacesT == i - 1)
+                    {
+                        temp = "";
+                        for (int k = 0; k < line.Length; ++k)
+                        {
+                            if (k + 1 == d[0] + spacesL || k - 1 == d[0] + spacesL)
+                            {
+                                temp += "#";
+                            }
+                            else
+                            {
+                                temp += line[k];
+                            }
+                        }
+                        line = temp;
+                    }
+
+
 
                     if (d[1] + spacesT == i)
                     {
