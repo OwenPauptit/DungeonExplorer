@@ -22,23 +22,7 @@ namespace DungeonExplorer
             Console.SetWindowSize(WINDOW_WIDTH, WINDOW_HEIGHT);
             Console.SetBufferSize(WINDOW_WIDTH,WINDOW_HEIGHT);
             Console.OutputEncoding = System.Text.Encoding.UTF8;
-            Room r = new Room();
-            Player p = new Player();
-            int nextEntranceX, nextEntranceY;
-            Console.WriteLine("Press any key to start");
-            Console.ReadKey();
-            while (true)
-            {
-                if (r.ChangedRooms)
-                {
-                    r.GetEntranceCoords(out nextEntranceX, out nextEntranceY);
-                    r = new Room(nextEntranceX, nextEntranceY);
-                    p.SetPosition(r.GetNewPlayerX(), r.GetNewPlayerY());
-                }
-                Console.Clear();
-                r.DisplayFloorPlan(p.X,p.Y,p.Symbol);
-                p.Move(Console.ReadKey().Key,r);
-            }
+            Game.PlayGame();
 
 
         }

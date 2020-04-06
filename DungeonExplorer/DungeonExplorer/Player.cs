@@ -10,7 +10,7 @@ namespace DungeonExplorer
     {
 
         private int _x, _y;
-        char _symbol;
+        private char _symbol;
 
         public int X
         {
@@ -75,21 +75,28 @@ namespace DungeonExplorer
             _x = x;
             _y = y;
         }
-        public void Move(ConsoleKey direction, Room r)
+        public void Move(ConsoleKey input, Room r)
         {
-            switch (direction)
+            switch (input)
             {
                 case ConsoleKey.W:
-                    if (!r.IsValidPosition(_x, --_y)) { ++_y; }
+                    if (!r.IsValidPlayerMove(_x, --_y)) { ++_y; }
                     break;
                 case ConsoleKey.A:
-                    if (!r.IsValidPosition(--_x, _y)){ ++_x; }
+                    if (!r.IsValidPlayerMove(--_x, _y)){ ++_x; }
                     break;
                 case ConsoleKey.S:
-                    if (!r.IsValidPosition(_x, ++_y)) { --_y; }
+                    if (!r.IsValidPlayerMove(_x, ++_y)) { --_y; }
                     break;
                 case ConsoleKey.D:
-                    if (!r.IsValidPosition(++_x, _y)) { --_x; }
+                    if (!r.IsValidPlayerMove(++_x, _y)) { --_x; }
+                    break;
+
+                case ConsoleKey.UpArrow:
+                case ConsoleKey.DownArrow:
+                case ConsoleKey.RightArrow:
+                case ConsoleKey.LeftArrow:
+                    Game.CreatePellet(this, input);
                     break;
             }
         }

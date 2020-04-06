@@ -311,6 +311,58 @@ namespace DungeonExplorer
             }
         }
 
+        public void DisplayFloorPlan(int x, int y, char symbol, List<Pellet> pellets)
+        {
+            List<string> temp = new List<string>();
+            string line;
+            for (int row = 0; row < _floorPlan.Count; ++row)
+            {
+                if (row == y)
+                {
+                    line = "";
+                    for (int col = 0; col < _floorPlan[y].Length; ++col)
+                    {
+                        if (col == x)
+                        {
+                            line += symbol;
+                        }
+                        else
+                        {
+                            line += _floorPlan[row][col];
+                        }
+                    }
+                }
+                else
+                {
+                    line = _floorPlan[row];
+                }
+                temp.Add(line);
+
+                foreach (var p in pellets)
+                {
+
+                    if (row == p.Y)
+                    {
+                        line = "";
+                        for (int col = 0; col < _floorPlan[row].Length; ++col)
+                        {
+                            if (col == p.X)
+                            {
+                                line += p.Symbol;
+                            }
+                            else
+                            {
+                                line += temp[row][col];
+                            }
+                        }
+                        temp[row] = line;
+                    }
+                }
+
+            }
+            DisplayFloorPlan(temp);
+        }
+
         public int GetNewPlayerX()
         {
             return _doors[0][0] + spacesL;
@@ -343,7 +395,8 @@ namespace DungeonExplorer
                 y = 0;
             }
         }
-        public bool IsValidPosition(int x, int y)
+        public bool IsValidPlayerMove
+            (int x, int y)
         {
             foreach(var d in _doors)
             {
@@ -359,6 +412,7 @@ namespace DungeonExplorer
             }
             return _floorPlan[y][x] != '#';
         }
+
 
     }
 }
