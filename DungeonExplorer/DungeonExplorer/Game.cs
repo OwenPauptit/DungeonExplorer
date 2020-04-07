@@ -19,6 +19,8 @@ namespace DungeonExplorer
         public static void PlayGame()
         {
 
+            Console.WriteLine();
+
             currentRoom = new Room();
             player = new Player();
             pellets = new List<Pellet>();
@@ -58,8 +60,9 @@ namespace DungeonExplorer
                                 Program.Highscore = enemiesKilled;
                                 Console.WriteLine("New Highscore!");
                             }
-                            Console.WriteLine("\n\nPress any key to return to the main menu");
-                            Console.ReadKey(true);
+                            Console.WriteLine("Press Enter to continue");
+                            while (Console.ReadKey(true).Key != ConsoleKey.Enter) { }
+                            Console.Clear();
                             return;
                         }
                         e.Move();
