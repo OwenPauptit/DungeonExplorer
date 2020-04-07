@@ -41,6 +41,8 @@ namespace DungeonExplorer
                         case 1:
                             Console.Clear();
                             Game.PlayGame();
+                            Console.CursorVisible = true;
+                            Console.Title = "Dungeon Explorer!";
                             break;
                         case 2:
                             Console.Clear();

@@ -18,6 +18,7 @@ namespace DungeonExplorer
         static Player player;
         public static void PlayGame()
         {
+            Console.CursorVisible = false;
 
             Console.WriteLine();
 
@@ -30,12 +31,20 @@ namespace DungeonExplorer
 
             int nextEntranceX, nextEntranceY, enemiesKilled = 0;
 
+            var watch = System.Diagnostics.Stopwatch.StartNew();
+            watch.Stop();
+            watch.Reset();
+            var elapsedMs = watch.ElapsedMilliseconds;
+            string title = Console.Title;
+
             Console.WriteLine("Press any key to start");
             Console.ReadKey();
             while (true)
             {
                 do
                 {
+                    watch.Start();
+
                     if (currentRoom.ChangedRooms)
                     {
                         pellets.Clear();
@@ -60,7 +69,7 @@ namespace DungeonExplorer
                                 Program.Highscore = enemiesKilled;
                                 Console.WriteLine("New Highscore!");
                             }
-                            Console.WriteLine("Press Enter to continue");
+                            Console.Write("Press Enter to continue");
                             while (Console.ReadKey(true).Key != ConsoleKey.Enter) { }
                             Console.Clear();
                             return;
@@ -77,6 +86,7 @@ namespace DungeonExplorer
                                 deadEnemies.Add(e);
                                 deadPellets.Add(p);
                                 ++enemiesKilled;
+                                Console.Beep();
                             }
                         }
 
@@ -101,10 +111,18 @@ namespace DungeonExplorer
                     }
                     deadEnemies.Clear();
 
-                    Thread.Sleep(40);
+                    Thread.Sleep(12);
+
+                    watch.Stop();
+                    elapsedMs = watch.ElapsedMilliseconds;
+                    Console.Title = title + "        FPS: " + (1000/elapsedMs).ToString();
+                    watch.Reset();
+
                 } while (!Console.KeyAvailable);
                 
                 player.Move(Console.ReadKey().Key, currentRoom);
+
+
             }
         }
 
