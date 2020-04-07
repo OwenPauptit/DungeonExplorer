@@ -16,8 +16,20 @@ namespace DungeonExplorer
         List<int[]> _doors;
         List<string> _floorPlan;
 
-        static Random rnd = new Random();
-
+        public int Width
+        {
+            get
+            {
+                return _width;
+            }
+        }
+        public int Height
+        {
+            get
+            {
+                return _height;
+            }
+        }
         public bool ChangedRooms
         {
             get
@@ -34,19 +46,19 @@ namespace DungeonExplorer
             _doors = new List<int[]>();
             if (entranceX > 3 && entranceX < Program.WINDOW_WIDTH - 5)
             {
-                _width = rnd.Next(entranceX + 2, Program.WINDOW_WIDTH - 4);
+                _width = Program.rnd.Next(entranceX + 2, Program.WINDOW_WIDTH - 4);
             }
             else
             {
-                _width = rnd.Next(5, Program.WINDOW_WIDTH - 4);
+                _width = Program.rnd.Next(5, Program.WINDOW_WIDTH - 4);
             }
             if (entranceY > 3 && entranceY < Program.WINDOW_HEIGHT - 5)
             {
-                _height = rnd.Next(entranceY + 2, Program.WINDOW_HEIGHT - 4);
+                _height = Program.rnd.Next(entranceY + 2, Program.WINDOW_HEIGHT - 4);
             }
             else
             {
-                _height = rnd.Next(5, Program.WINDOW_HEIGHT - 4);
+                _height = Program.rnd.Next(5, Program.WINDOW_HEIGHT - 4);
             }
             _doors.Add(GenerateEntrance(entranceX,entranceY));
             generateDoors();
@@ -60,8 +72,8 @@ namespace DungeonExplorer
             _nextEntrance = new int[2];
             _floorPlan = new List<string>();
             _doors = new List<int[]>();
-            _width = rnd.Next(5, Program.WINDOW_WIDTH - 4);
-            _height = rnd.Next(5, Program.WINDOW_HEIGHT - 4);
+            _width = Program.rnd.Next(5, Program.WINDOW_WIDTH - 4);
+            _height = Program.rnd.Next(5, Program.WINDOW_HEIGHT - 4);
             generateDoors();
             GenerateFloorPlan();
             DisplayFloorPlan();
@@ -76,29 +88,29 @@ namespace DungeonExplorer
 
         private void generateDoors()
         {
-            int numDoors = (_doors.Count >0)? rnd.Next(_doors.Count + 1,4):rnd.Next(1, 4);
+            int numDoors = (_doors.Count >0)? Program.rnd.Next(_doors.Count + 1,4): Program.rnd.Next(1, 4);
             int x, y, wall;
             bool valid;
             while (_doors.Count < numDoors)
             {
-                wall = rnd.Next(1, 5); // 1 = top, 2 = right, 3 = bottom, 4 = left
+                wall = Program.rnd.Next(1, 5); // 1 = top, 2 = right, 3 = bottom, 4 = left
                 switch (wall)
                 {
                     case 1:
-                        x = rnd.Next(1, _width - 1);
+                        x = Program.rnd.Next(1, _width - 1);
                         y = 0;
                         break;
                     case 2:
                         x = 0;
-                        y = rnd.Next(1, _height - 1);
+                        y = Program.rnd.Next(1, _height - 1);
                         break;
                     case 3:
-                        x = rnd.Next(1, _width - 1);
+                        x = Program.rnd.Next(1, _width - 1);
                         y = _height-1;
                         break;
                     case 4:
                         x = _width-1;
-                        y = rnd.Next(1, _height - 1);
+                        y = Program.rnd.Next(1, _height - 1);
                         break;
                     default:
                         x = -1; // need for compiler
@@ -155,7 +167,7 @@ namespace DungeonExplorer
             int spacesR = 2;// Program.WINDOW_WIDTH - spacesL - _width;
 
             calc = (Program.WINDOW_HEIGHT - _height) / 2;
-            spacesT = (int)Math.Ceiling(calc);
+            spacesT = (int)Math.Floor(calc);
 
 
             for (int i = 0; i < this._height+ spacesT+1; ++i) // this used for clarity as could be confusion between Program.WINDOW_WIDTH / Program.WINDOW_HEIGHT and _width / _height
@@ -311,7 +323,7 @@ namespace DungeonExplorer
             }
         }
 
-        public void DisplayFloorPlan(int x, int y, char symbol, List<Pellet> pellets)
+        public void DisplayFloorPlan(int x, int y, char symbol, List<Pellet> pellets, List<Enemy> enemies)
         {
             List<string> temp = new List<string>();
             string line;
@@ -359,6 +371,27 @@ namespace DungeonExplorer
                     }
                 }
 
+                foreach (var e in enemies)
+                {
+
+                    if (row == e.Y)
+                    {
+                        line = "";
+                        for (int col = 0; col < _floorPlan[row].Length; ++col)
+                        {
+                            if (col == e.X)
+                            {
+                                line += e.Symbol;
+                            }
+                            else
+                            {
+                                line += temp[row][col];
+                            }
+                        }
+                        temp[row] = line;
+                    }
+                }
+
             }
             DisplayFloorPlan(temp);
         }
@@ -395,8 +428,7 @@ namespace DungeonExplorer
                 y = 0;
             }
         }
-        public bool IsValidPlayerMove
-            (int x, int y)
+        public bool IsValidPlayerMove(int x, int y)
         {
             foreach(var d in _doors)
             {
@@ -410,6 +442,10 @@ namespace DungeonExplorer
                     _changedRooms = true;
                 }
             }
+            return _floorPlan[y][x] != '#';
+        }
+        public bool IsValidEnemyMove(int x, int y)
+        {
             return _floorPlan[y][x] != '#';
         }
 

@@ -16,16 +16,21 @@ namespace DungeonExplorer
         public const int WINDOW_WIDTH = 60;
         public const int WINDOW_HEIGHT = 20;
 
+        public static Random rnd = new Random();
+        public static int Highscore {get; set;}
 
         static void Main(string[] args)
         {
             Console.Title = "Dungeon Explorer!";
             Console.SetWindowSize(WINDOW_WIDTH, WINDOW_HEIGHT);
-            Console.SetBufferSize(WINDOW_WIDTH,WINDOW_HEIGHT);
+            Console.SetBufferSize(WINDOW_WIDTH, WINDOW_HEIGHT);
             Console.OutputEncoding = System.Text.Encoding.UTF8;
 
-            Game.PlayGame();
+            Program.Highscore = 0;
 
+            while (true) {
+                Game.PlayGame();
+            }
 
         }
     }
