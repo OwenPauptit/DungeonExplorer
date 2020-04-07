@@ -14,9 +14,6 @@ S - Move down
 
 D - Move right
 
-
-
-
 ↑ - Shoot up
 
 ← - Shoot left
