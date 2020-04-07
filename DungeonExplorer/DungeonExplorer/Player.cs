@@ -83,7 +83,7 @@ namespace DungeonExplorer
                     if (!r.IsValidPlayerMove(_x, --_y)) { ++_y; }
                     break;
                 case ConsoleKey.A:
-                    if (!r.IsValidPlayerMove(--_x, _y)){ ++_x; }
+                    if (!r.IsValidPlayerMove(--_x, _y)) { ++_x; }
                     break;
                 case ConsoleKey.S:
                     if (!r.IsValidPlayerMove(_x, ++_y)) { --_y; }
@@ -91,7 +91,9 @@ namespace DungeonExplorer
                 case ConsoleKey.D:
                     if (!r.IsValidPlayerMove(++_x, _y)) { --_x; }
                     break;
-
+            }
+            switch (input)
+            {
                 case ConsoleKey.UpArrow:
                 case ConsoleKey.DownArrow:
                 case ConsoleKey.RightArrow:
@@ -99,6 +101,7 @@ namespace DungeonExplorer
                     Game.CreatePellet(this, input);
                     break;
             }
+            
         }
 
     }

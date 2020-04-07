@@ -15,7 +15,7 @@ namespace DungeonExplorer
     class Pellet
     {
 
-        private int _x, _y;
+        private int _x, _y, _clock;
         private int[] _velocity;
         private PelletType _type;
         private char _symbol;
@@ -49,6 +49,7 @@ namespace DungeonExplorer
             _type = type;
             _x = origin.X;
             _y = origin.Y;
+            _clock = 1;
 
             if (_type == PelletType.Standard)
             {
@@ -79,7 +80,11 @@ namespace DungeonExplorer
 
         public void Move(){
             _x += _velocity[0];
-            _y += _velocity[1];
+            if (_clock++ == 1)
+            {
+                _y += _velocity[1];
+                _clock = 0;
+            }
         }
 
     }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows.Input;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,6 +23,7 @@ namespace DungeonExplorer
             Console.SetWindowSize(WINDOW_WIDTH, WINDOW_HEIGHT);
             Console.SetBufferSize(WINDOW_WIDTH,WINDOW_HEIGHT);
             Console.OutputEncoding = System.Text.Encoding.UTF8;
+
             Game.PlayGame();
 
 
