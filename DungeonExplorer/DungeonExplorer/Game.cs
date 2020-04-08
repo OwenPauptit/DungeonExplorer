@@ -79,11 +79,30 @@ namespace DungeonExplorer
                     foreach (var p in pellets)
                     {
 
+                        if (p.X == player.X && p.Y == player.Y)
+                        {
+
+                            Console.WriteLine("You Died...");
+                            if (enemiesKilled > Program.Highscore)
+                            {
+                                Program.Highscore = enemiesKilled;
+                                Console.WriteLine("New Highscore!");
+                            }
+                            Console.Write("Press Enter to continue");
+                            while (Console.ReadKey(true).Key != ConsoleKey.Enter) { }
+                            Console.Clear();
+                            return;
+                        }
+
                         foreach (var e in enemies)
                         {
                             if (e.X == p.X && e.Y == p.Y)
                             {
-                                deadEnemies.Add(e);
+                                e.TakeDamage();
+                                if (e.IsDead)
+                                {
+                                    deadEnemies.Add(e);
+                                }
                                 deadPellets.Add(p);
                                 ++enemiesKilled;
                                 Console.Beep();
@@ -111,7 +130,7 @@ namespace DungeonExplorer
                     }
                     deadEnemies.Clear();
 
-                    Thread.Sleep(12);
+                    Thread.Sleep(40);
 
                     watch.Stop();
                     elapsedMs = watch.ElapsedMilliseconds;
@@ -130,6 +149,11 @@ namespace DungeonExplorer
         {
             pellets.Add(new Pellet(origin, direction, type));
         }
+
+        public static void CreatePellet(Enemy origin, ConsoleKey direction, PelletType type = PelletType.Standard)
+        {
+            pellets.Add(new Pellet(origin, direction, type));
+        }
         private static void CreateEnemy(EnemyType type=EnemyType.Standard)
         {
             int L = (int)Math.Ceiling((double)((Program.WINDOW_WIDTH - currentRoom.Width) / 2));
@@ -143,9 +167,26 @@ namespace DungeonExplorer
         private static void FillRoom()
         {
             int numEnemies = Program.rnd.Next(0,(int)(currentRoom.Width * currentRoom.Height / 80));
+            int typeRnd;
             for (int i = 0; i < numEnemies; ++i)
             {
-                CreateEnemy();
+                typeRnd = Program.rnd.Next(0, 100);
+                if (typeRnd < 50)
+                {
+                    CreateEnemy();
+                }
+                else if (typeRnd < 85)
+                {
+                    CreateEnemy(EnemyType.BigStandard);
+                }
+                else if (typeRnd < 95)
+                {
+                    CreateEnemy(EnemyType.StaticShooter);
+                }
+                else
+                {
+                    CreateEnemy(EnemyType.StaticPulser);
+                }
             }
         }
 

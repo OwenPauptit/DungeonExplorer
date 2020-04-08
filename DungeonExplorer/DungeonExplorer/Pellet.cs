@@ -9,7 +9,8 @@ namespace DungeonExplorer
 
     enum PelletType
     {
-        Standard
+        Standard = 'o',
+        StaticShooter = '҉'
     }
 
     class Pellet
@@ -51,28 +52,73 @@ namespace DungeonExplorer
             _y = origin.Y;
             _clock = 1;
 
+            switch (direction)
+            {
+                case ConsoleKey.UpArrow:
+                    _velocity = new int[] { 0, -1 };
+                    break;
+                case ConsoleKey.RightArrow:
+                    _velocity = new int[] { 1, 0 };
+                    break;
+                case ConsoleKey.DownArrow:
+                    _velocity = new int[] { 0, 1 };
+                    break;
+                case ConsoleKey.LeftArrow:
+                    _velocity = new int[] { -1, 0 };
+                    break;
+                default:
+                    _velocity = new int[] { 0, 0 };
+                    Console.WriteLine("Invalid Pellet Direction");
+                    break;
+            }
+
+            if (_type == PelletType.Standard) 
+            {
+                _symbol = 'o';
+                
+            }else if (_type == PelletType.StaticShooter)
+            {
+                _symbol = '҉';
+            }
+            Move();
+
+        }
+
+        public Pellet(Enemy origin, ConsoleKey direction, PelletType type = PelletType.Standard)
+        {
+            _type = type;
+            _x = origin.X;
+            _y = origin.Y;
+            _clock = 1;
+
+            switch (direction)
+            {
+                case ConsoleKey.UpArrow:
+                    _velocity = new int[] { 0, -1 };
+                    break;
+                case ConsoleKey.RightArrow:
+                    _velocity = new int[] { 1, 0 };
+                    break;
+                case ConsoleKey.DownArrow:
+                    _velocity = new int[] { 0, 1 };
+                    break;
+                case ConsoleKey.LeftArrow:
+                    _velocity = new int[] { -1, 0 };
+                    break;
+                default:
+                    _velocity = new int[] { 0, 0 };
+                    Console.WriteLine("Invalid Pellet Direction");
+                    break;
+            }
+
             if (_type == PelletType.Standard)
             {
                 _symbol = 'o';
-                switch (direction)
-                {
-                    case ConsoleKey.UpArrow:
-                        _velocity = new int[] { 0, -1 };
-                        break;
-                    case ConsoleKey.RightArrow:
-                        _velocity = new int[] { 1, 0 };
-                        break;
-                    case ConsoleKey.DownArrow:
-                        _velocity = new int[] { 0, 1 };
-                        break;
-                    case ConsoleKey.LeftArrow:
-                        _velocity = new int[] { -1, 0 };
-                        break;
-                    default:
-                        _velocity = new int[] { 0, 0 };
-                        Console.WriteLine("Invalid Pellet Direction");
-                        break;
-                }
+
+            }
+            else if (_type == PelletType.StaticShooter)
+            {
+                _symbol = '҉';
             }
             Move();
 
